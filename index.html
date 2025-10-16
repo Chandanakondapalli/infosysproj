@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prompt App</title>
+  <style>
+    /* ---------- Root Theme Variables ---------- */
+    :root {
+      --bg-light: linear-gradient(135deg, #e3f2fd, #ffffff);
+      --bg-dark: linear-gradient(135deg, #121212, #1f1f1f);
+      --text-light: #1a1a1a;
+      --text-dark: #f5f5f5;
+      --accent: #2c82f6;
+      --accent-2: #00b4d8;
+      --card-light: #ffffffcc;
+      --card-dark: #2b2b2bcc;
+      --border-light: #e2e2e2;
+      --border-dark: #444;
+      --tweetA-bg: linear-gradient(135deg, #f9fbff, #eaf2ff);
+      --tweetB-bg: linear-gradient(135deg, #fff8e7, #ffedd5);
+      --best-bg: linear-gradient(135deg, #dfffe0, #eaffea);
+      --explanation-bg: linear-gradient(135deg, #fff1f8, #ffe6f2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      background: var(--bg-light);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    /* ---------- Container ---------- */
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: var(--card-light);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    body.dark .container {
+      background: var(--card-dark);
+      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.05);
+    }
+
+    /* ---------- Header ---------- */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .theme-toggle {
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 5px 14px rgba(0, 180, 216, 0.4);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05);
+    }
+
+    /* ---------- Prompt Input ---------- */
+    .prompt-box {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .prompt-box input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      color: inherit;
+      outline: none;
+    }
+
+    body.dark .prompt-box input {
+      background: rgba(50, 50, 50, 0.8);
+      border: 1px solid var(--border-dark);
+    }
+
+    .prompt-box button {
+      padding: 14px 22px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 5px 14px rgba(0, 180, 216, 0.4);
+    }
+
+    .prompt-box button:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ---------- Cards ---------- */
+    .tweets {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 260px;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
+
+    body.dark .card h2 {
+      color: var(--accent-2);
+    }
+
+    /* ---------- Output Backgrounds ---------- */
+    .tweet-a {
+      background: var(--tweetA-bg);
+    }
+
+    .tweet-b {
+      background: var(--tweetB-bg);
+    }
+
+    .best-card {
+      background: var(--best-bg);
+    }
+
+    .explanation-card {
+      background: var(--explanation-bg);
+    }
+
+    .highlight {
+      margin-top: 10px;
+      border: none;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Dark Mode Tweaks */
+    body.dark .tweet-a {
+      background: linear-gradient(135deg, #1f2a3a, #1c1c1c);
+    }
+
+    body.dark .tweet-b {
+      background: linear-gradient(135deg, #3a2a1f, #1c1c1c);
+    }
+
+    body.dark .best-card {
+      background: linear-gradient(135deg, #1c2b1c, #252525);
+    }
+
+    body.dark .explanation-card {
+      background: linear-gradient(135deg, #2b1c25, #252525);
+    }
+
+    /* ---------- Animations ---------- */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 600px) {
+      .tweets {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Prompt App ✨</h1>
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </div>
+
+    <!-- Prompt Input -->
+    <div class="prompt-box">
+      <input id="prompt" placeholder="Enter your prompt to generate responses..." />
+      <button onclick="runPrompt()">Generate</button>
+    </div>
+
+    <!-- Tweets -->
+    <div class="tweets">
+      <div class="card tweet-a">
+        <h2>Output A</h2>
+        <p id="tweet_a">Generated output A will appear here...</p>
+      </div>
+      <div class="card tweet-b">
+        <h2>Output B</h2>
+        <p id="tweet_b">Generated output B will appear here...</p>
+      </div>
+    </div>
+
+    <!-- Prediction -->
+    <div class="card highlight best-card">
+      <h2>Best Output</h2>
+      <p id="prediction">The best output will appear here...</p>
+    </div>
+
+    <!-- Explanation -->
+    <div class="card highlight explanation-card">
+      <h2>Explanation</h2>
+      <p id="explanation">Reason for the chosen output will appear here...</p>
+    </div>
+  </div>
+
+  <script>
+    const tweet_a = document.getElementById('tweet_a');
+    const tweet_b = document.getElementById('tweet_b');
+    const prediction = document.getElementById('prediction');
+    const explanation = document.getElementById('explanation');
+    const themeBtn = document.querySelector('.theme-toggle');
+
+    // Fetch Data
+    async function runPrompt() {
+      const input = document.getElementById('prompt');
+      if (!input.value.trim()) {
+        alert("Please enter a prompt!");
+        return;
+      }
+
+      prediction.textContent = "⏳ Generating response...";
+      explanation.textContent = "";
+
+      try {
+        const resp = await fetch(`http://127.0.0.1:5000/generate?prompt=${encodeURIComponent(input.value)}`);
+        if (!resp.ok) throw new Error("Server error");
+        const data = await resp.json();
+
+        tweet_a.textContent = data.tweet_a;
+        tweet_b.textContent = data.tweet_b;
+        prediction.textContent = data.prediction;
+        explanation.textContent = data.explanation;
+      } catch (error) {
+        alert("⚠️ Unable to fetch data. Ensure your Flask server is running!");
+        prediction.textContent = "";
+      }
+    }
+
+    // Theme Toggle
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      themeBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    }
+  </script>
+</body>
+</html>
